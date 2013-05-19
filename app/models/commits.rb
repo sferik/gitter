@@ -2,9 +2,16 @@ require 'core_ext/enumerable'
 
 class Commits
 
-  include Weekly
-
   class << self
+
+    def weeks(date)
+      weeks = []
+      begin
+        weeks << (date.beginning_of_week..date.end_of_week)
+        date += 7
+      end while date < Date.today
+      weeks
+    end
 
     def by_week(start_date=10.weeks.ago.to_date)
       commits = client.repos(ENV['GITHUB_LOGIN'], sort: "pushed", per_page: 100).threaded_map do |repo|

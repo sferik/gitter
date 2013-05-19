@@ -2,9 +2,16 @@ require 'core_ext/enumerable'
 
 class Tweets
 
-  include Weekly
-
   class << self
+
+    def weeks(date)
+      weeks = []
+      begin
+        weeks << (date.beginning_of_week..date.end_of_week)
+        date += 7
+      end while date < Date.today
+      weeks
+    end
 
     def collect_with_max_id(collection=[], max_id=nil, &block)
       tweets = retryable(tries: 3, on: Twitter::Error::ServerError, sleep: 0) do
