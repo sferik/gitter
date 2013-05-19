@@ -6,6 +6,7 @@ gem 'rails', '4.0.0.rc1'
 
 gem 'octokit'
 gem 'retryable'
+gem 'twitter'
 
 group :test do
   gem 'rspec-rails'
