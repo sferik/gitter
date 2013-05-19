@@ -4,9 +4,14 @@ ruby '2.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0.rc1'
 
+gem 'octokit'
+gem 'retryable'
+
 group :test do
   gem 'rspec-rails'
   gem 'simplecov'
+  gem 'timecop'
+  gem 'webmock'
 end
 
 # Use SCSS for stylesheets
