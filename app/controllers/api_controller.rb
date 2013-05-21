@@ -7,12 +7,12 @@ class ApiController < ApplicationController
       {
         title: "GitHub Commits",
         color: "green",
-        datapoints: commits.value.map{|week, count| {title: week, value: count}}.sort_by{|h| h[:title]},
+        datapoints: format_datapoints(commits.value)
       },
       {
         title: "Tweets",
         color: "aqua",
-        datapoints: tweets.value.map{|week, count| {title: week, value: count}}.sort_by{|h| h[:title]},
+        datapoints: format_datapoints(tweets.value)
       },
     ]
     @data = {
@@ -24,6 +24,12 @@ class ApiController < ApplicationController
       }
     }
     render json: @data
+  end
+
+  private
+
+  def format_datapoints(activities)
+    activities.map{|week, count| {title: week, value: count}}.sort_by{|h| h[:title]}
   end
 
 end
