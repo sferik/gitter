@@ -32,7 +32,10 @@ class Commits
         date = Date.parse(commit.commit.author.date)
         weeks(start).each do |week|
           data[week.first] ||= 0
-          data[week.first]  += 1 if week.include?(date)
+          if week.include?(date)
+            data[week.first]  += 1
+            break
+          end
         end
       end
 
