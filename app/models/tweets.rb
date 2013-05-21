@@ -4,7 +4,8 @@ class Tweets
 
   class << self
 
-    def weeks(date)
+    def weeks(time)
+      date = time.to_date
       weeks = []
       begin
         weeks << (date.beginning_of_week..date.end_of_week)
@@ -22,7 +23,7 @@ class Tweets
       tweets.empty? ? collection.flatten : collect_with_max_id(collection, tweets.last.id - 1, &block)
     end
 
-    def by_week(start_date=10.weeks.ago.to_date)
+    def by_week(start=10.weeks.ago)
       opts = {count: 200}
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
@@ -33,7 +34,7 @@ class Tweets
 
       tweets.each do |tweet|
         date = tweet.created_at.to_date
-        weeks(start_date).each do |week|
+        weeks(start).each do |week|
           data[week.first] ||= 0
           data[week.first]  += 1 if week.include?(date)
         end

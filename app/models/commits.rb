@@ -4,7 +4,8 @@ class Commits
 
   class << self
 
-    def weeks(date)
+    def weeks(time)
+      date = time.to_date
       weeks = []
       begin
         weeks << (date.beginning_of_week..date.end_of_week)
@@ -13,7 +14,7 @@ class Commits
       weeks
     end
 
-    def by_week(start_date=10.weeks.ago.to_date)
+    def by_week(start=10.weeks.ago)
       commits = client.repos(ENV['GITHUB_LOGIN'], sort: "pushed", per_page: 100).threaded_map do |repo|
         retryable(tries: 3, on: Octokit::Error, sleep: 0) do
           client.commits(repo.full_name, "master", per_page: 100)
@@ -29,7 +30,7 @@ class Commits
 
       commits.each do |commit|
         date = Date.parse(commit.commit.author.date)
-        weeks(start_date).each do |week|
+        weeks(start).each do |week|
           data[week.first] ||= 0
           data[week.first]  += 1 if week.include?(date)
         end
